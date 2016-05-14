@@ -8,7 +8,9 @@ defmodule RunLengthEncoder do
   """
   @spec encode(String.t) :: String.t
   def encode(string) do
-
+    case string do
+      "" -> ""
+    end
   end
 
   @spec decode(String.t) :: String.t
