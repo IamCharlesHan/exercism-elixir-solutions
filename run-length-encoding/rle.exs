@@ -9,14 +9,11 @@ defmodule RunLengthEncoder do
   @spec encode(String.t) :: String.t
   def encode(string) do
     cond do
-      string == "" -> ""
       String.length(string) > 0 ->
         String.codepoints(string)
-        |> Enum.reduce(%{}, fn(i, acc) ->
-          Map.update(acc, i, 1, &(&1 + 1))
-        end)
-        |> Enum.reduce("", fn({key, value}, acc) ->
-          acc <> "#{value}#{key}"
+        |> Enum.chunk_by(&(&1))
+        |> Enum.reduce("", fn(x, acc) ->
+          acc <> "#{length(x)}#{List.first(x)}"
         end)
       true -> ""
     end
@@ -24,6 +21,12 @@ defmodule RunLengthEncoder do
 
   @spec decode(String.t) :: String.t
   def decode(string) do
-
+    Regex.scan(~r/[0-9]+|[A-Z]+/, string) 
+    |> List.flatten()
+    |> Enum.chunk(2)
+    |> Enum.reduce("", fn(i, acc) ->
+      {repeatNum, _} = Integer.parse(hd(i))
+      acc <> String.duplicate(List.last(i), repeatNum)
+    end)
   end
 end
