@@ -12,7 +12,7 @@ defmodule RunLengthEncoderTest do
     assert RunLengthEncoder.encode("") === ""
   end
 
-  @tag :pending
+  #@tag :pending
   test "simple string gets encoded" do
     assert RunLengthEncoder.encode("AAA") === "3A"
   end

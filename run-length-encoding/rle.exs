@@ -8,8 +8,17 @@ defmodule RunLengthEncoder do
   """
   @spec encode(String.t) :: String.t
   def encode(string) do
-    case string do
-      "" -> ""
+    cond do
+      string == "" -> ""
+      String.length(string) > 0 ->
+        String.codepoints(string)
+        |> Enum.reduce(%{}, fn(i, acc) ->
+          Map.update(acc, i, 1, &(&1 + 1))
+        end)
+        |> Enum.reduce("", fn({key, value}, acc) ->
+          acc <> "#{value}#{key}"
+        end)
+      true -> ""
     end
   end
 
