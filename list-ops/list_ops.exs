@@ -8,7 +8,21 @@ defmodule ListOps do
 
   @spec count(list) :: non_neg_integer
   def count(l) do
+    cond do
+      l == [] -> 0
+      l != nil -> count(l, 0)
+      true -> 0
+    end
+  end
 
+  defp count(l, acc) do
+    [h | t] = l
+    cond do
+      h == [] -> 0
+      h != nil && t == [] -> acc + 1
+      h != nil && t != nil -> count(t, acc + 1)
+      true -> 0
+    end
   end
 
   @spec reverse(list) :: list
