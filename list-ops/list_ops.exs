@@ -27,7 +27,9 @@ defmodule ListOps do
 
   @spec reverse(list) :: list
   def reverse(l) do
-
+    reduce(l, [], fn(x, acc) ->
+      append([x], acc)
+    end) 
   end
 
   @spec map(list, (any -> any)) :: list
@@ -43,13 +45,23 @@ defmodule ListOps do
   @type acc :: any
   @spec reduce(list, acc, ((any, acc) -> acc)) :: acc
   def reduce(l, acc, f) do
-
+    cond do
+      l == [] -> acc
+      true ->
+        [head | tail] = l
+        reduce(tail, f.(head, acc), f)
+    end
   end
 
   @spec append(list, list) :: list
   def append(a, b) do
-
+    _append(a, b)
   end
+
+  defp _append([], []), do: []
+  defp _append([], b), do: b
+  defp _append(a, []), do: a
+  defp _append([head | tail], b), do: [head | _append(tail, b)]
 
   @spec concat([[any]]) :: [any]
   def concat(ll) do
